@@ -152,7 +152,7 @@ if( __name__ == "__main__"):
 	pubkeys = [key.publickey()]
 
 	# All password logins
-	logins = {"User": "fickdichinsknie"}
+	logins = {"User": "verysecretpassword"}
 	
 	# Functions used by LoginManager
 	def make_hash(string1, string2):

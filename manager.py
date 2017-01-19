@@ -86,7 +86,7 @@ class LoginManager(object):
 		"""
 		Login via password. Automatically places a LoginCookie.
 		"""
-		hash_ = self.hash_function(name, passwd)
+		hash_ = self.db_get_passwd_hash(name)
 		if(hash_ == self.hash_function(name, passwd)):
 			self.place_cookie(self.make_cookie(name).to_json())
 			return True

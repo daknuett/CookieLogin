@@ -47,8 +47,8 @@ class LoginCookie(object):
 	
 	"""
 	def __init__(self, name, ip, setdate, expiredate):
-		# XXX this has to be a string but JSON is like
-		# nah just use a list
+		# XXX this has to be a string but JSON 
+		# is like "nah just use a list".
 		while(isinstance(name, (list, tuple))):
 			name = name[0]
 		self.name = name,
@@ -68,7 +68,14 @@ class LoginCookie(object):
 		
 		"""
 		summer = hashlib.sha256()
-		data = "name" + str(self.name) + "ip" + str(self.ip) + "setdate" + str(self.setdate) + "expiredate" + str(self.expiredate)
+		# FIXME:
+		# I do not know why but this is fucked up.
+		# I ensure ``self.name`` to be str in __init__
+		# but anyways here is a tuple. 
+		# This is a workaround.
+		while(isinstance(self.name, (list, tuple))):
+			self.name = self.name[0]
+		data = "name" + self.name + "ip" + str(self.ip) + "setdate" + str(self.setdate) + "expiredate" + str(self.expiredate)
 		print("XXX: data = ", data)
 		summer.update(data.encode("UTF-8"))
 		return summer.digest()

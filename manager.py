@@ -140,52 +140,22 @@ class LoginManager(object):
 		return False
 	
 if( __name__ == "__main__"):
-	import cherrypy
-	import Crypto.PublicKey.RSA as RSA
-	import os
-	#
-	# XXX This test requires the module chat (a simple webbased chatsystem)
-	# To be in the parent folder and a __init__.py file in the parent folder.
-	#
-	from ..chat.iface.web_cherry import WebIface
-	key = RSA.generate(1024,os.urandom)
-	pubkeys = [key.publickey()]
+	print(\
+'''You should have received a file called 
+"test.zip" with this project. Unpack this zip
+file in the parent directory and move  the current
+directory (CookieLogin) to the directory "chat".
 
-	# All password logins
-	logins = {"User": "verysecretpassword"}
-	
-	# Functions used by LoginManager
-	def make_hash(string1, string2):
-		if(not isinstance(string1, bytes)):
-			string1 = string1.encode("UTF-8")
-			string2 = string2.encode("UTF-8")
-		return hashlib.sha256(string1 + string2).digest()
-	get_ip = lambda:  cherrypy.request.remote.ip
-	def set_cookie(c): 
-		print(c)
-		cherrypy.response.cookie["login"] = c
-	def remove_cookie(c): 
-		print(c)
-		cherrypy.response.cookie["login"] = ''
+Your tree should now look like this:
 
-	# hash the passwords
-	logins = {k: make_hash(k, v) for k,v in logins.items()}
-	get_passwd_hash = lambda name: logins[name]
-	get_expire_time = lambda name: datetime.timedelta(hours = 24)
+	/parent
+		...
+		/chat
+			/iface
+			/api
+			...
+			/CookieLogin
 
-	manager = LoginManager(get_passwd_hash, set_cookie,
-			make_hash, get_ip,
-			get_expire_time, remove_cookie, 
-			pubkeys, key)
-	webif = WebIface(manager)
+now go to /parent and run ``python3 -m chat.test``.''')
 
-	conf = {\
-		"/": {\
-			'tools.sessions.on': True
-		},
-	}
-	cherrypy.config.update({
-		'server.socket_host': '0.0.0.0'
-	})
-	cherrypy.quickstart(webif, "/", conf)
 
